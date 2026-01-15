@@ -1,0 +1,39 @@
+/* Register page specific */
+
+/* Reuse connection action styles for consistent button layout */
+
+.register-actions {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-top: 18px;
+}
+
+.register-actions .btn {
+  width: 50%;
+  font-size: 1.5em;
+}
+
+.switch {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.switch a {
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.switch a:hover {
+  text-decoration: underline;
+}
+
+.litle-header {
+  margin-left: 2rem;
+  margin-bottom: 3rem;
+  font-size: 1.5rem;
+  color: var(--muted);
+}

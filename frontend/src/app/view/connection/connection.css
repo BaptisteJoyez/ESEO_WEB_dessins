@@ -1,0 +1,26 @@
+/* Connexion page specific */
+
+.connexion-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.connexion-actions .btn {
+  width: 50%;
+  font-size: 1.5em;
+}
+
+.connexion-actions {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Override global label sizing for this page's form */
+
+.subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 4px;
+  font-size: 1.8rem;
+}
