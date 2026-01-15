@@ -1,0 +1,34 @@
+Project README — Development quickstart
+
+Prerequisites
+
+- Docker (https://docs.docker.com/get-docker/)
+- Docker Compose (included in modern Docker; documentation: https://docs.docker.com/compose/)
+
+Before you start
+
+- Verify Docker is installed and running on your machine.
+- Review `docker-compose.yml` and `apache/000-default.conf` to adjust any environment-specific settings (ports, mounts, credentials).
+
+Start the development environment
+
+1. Open a terminal in the project root (where `docker-compose.yml` is located).
+2. Run:
+
+```bash
+docker compose up
+```
+
+Add `-d` to run in detached mode:
+
+```bash
+docker compose up -d
+```
+
+Stop and remove containers:
+
+```bash
+docker compose down
+```
+
+If you want, I can expand this README with troubleshooting tips, environment variables, or a short architecture diagram.
