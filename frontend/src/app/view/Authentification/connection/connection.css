@@ -4,16 +4,18 @@
   display: flex;
   gap: 12px;
   margin-top: 18px;
+  align-items: center;
 }
 
 .connexion-actions .btn {
-  width: 50%;
-  font-size: 1.5em;
+  width: 48%;
+  font-size: 1.15rem;
+  padding: 10px 12px;
+  border-radius: 10px;
 }
 
 .connexion-actions {
-  display: flex;
-  gap: 2rem;
+  /* cleaned duplicate block — spacing handled above */
 }
 
 /* Override global label sizing for this page's form */
@@ -21,6 +23,6 @@
 .subtitle {
   text-align: center;
   color: var(--muted);
-  margin-bottom: 4px;
-  font-size: 1.8rem;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
 }

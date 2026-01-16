@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../../public/assets/css/globale.css" />
+    <link rel="stylesheet" href="dashboard.css" />
+    <title>Dashboard</title>
+  </head>
+
+  <body>
+    <div class="glass-card header-dashboard">
+      <div>
+        <div>
+          <p>fist name : #name</p>
+        </div>
+        <div>
+          <p>last name : #name</p>
+        </div>
+        <div>
+          <p>role : #role</p>
+        </div>
+        <div>
+          <p>club : #club</p>
+        </div>
+      </div>
+      <div class="connexion-actions">
+        <button data-logout-component class="btn btn-secondary">Logout</button>
+      </div>
+      <script src="../../Authentification/logout/logout.js"></script>
+    </div>
+
+    <div class="informations">
+      <div class="quick-info">
+        <div>
+          <h2>Quick Informations</h2>
+        </div>
+        <div>
+          <p>Pendding Competition :</p>
+          #list of all pedding competition
+        </div>
+        <div>
+          <p>waiting for the result :</p>
+          #list of all waiting result
+        </div>
+        <div>
+          <p>All competition that has been finish</p>
+          # name list of all finished competition
+        </div>
+      </div>
+      <div class="shortcuts">
+        <!-- Actions COMPETITEUR -->
+        <section id="submit_drawing">
+          <h3>🎨 Soumettre un dessin</h3>
+          <a href="submit_drawing.html">Soumettre</a>
+        </section>
+
+        <section id="my_drawings">
+          <h3>📂 Mes dessins</h3>
+          <a href="my_drawings.html">Voir</a>
+        </section>
+
+        <section id="my_results">
+          <h3>🏆 Mes résultats</h3>
+          <a href="my_results.html">Voir</a>
+        </section>
+
+        <!-- Actions EVALUATEUR -->
+        <section id="assess">
+          <h3>✍️ Dessins à évaluer</h3>
+          <a href="rate_drawing.html">Noter</a>
+        </section>
+
+        <!-- Actions PRESIDENT -->
+        <section id="assign_assessors">
+          <h3>👥 Affecter les évaluateurs</h3>
+          <a href="assign_assessors.html">Gérer</a>
+        </section>
+
+        <section id="close_competition">
+          <h3>🚦 Fermer la compétition</h3>
+          <button>Fermer & classer</button>
+        </section>
+
+        <!-- Actions DIRECTEUR -->
+        <section id="manage_members">
+          <h3>👤 Gestion des membres du club</h3>
+          <a href="manage_members.html">Gérer</a>
+        </section>
+
+        <section id="club_drawing">
+          <h3>📊 Dessins du club</h3>
+          <a href="club_drawings.html">Voir</a>
+        </section>
+
+        <!-- Actions ADMIN -->
+        <section id="manage_competition">
+          <h3>🛠️ Gestion des concours</h3>
+          <a href="manage_competitions.html">Gérer</a>
+        </section>
+
+        <section id="overview_stat">
+          <h3>📈 Statistiques</h3>
+          <a href="statistics.html">Voir</a>
+        </section>
+      </div>
+    </div>
+
+    <div></div>
+    <script type="module" src="dashboard.js"></script>
+  </body>
+</html>
