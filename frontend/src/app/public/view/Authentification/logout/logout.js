@@ -9,7 +9,7 @@
       } catch (err) {
         console.error("logout() threw:", err);
       }
-      window.location.href = "../../Authentification/connection/connection.html";
+      window.location.href = "../connection/coonnection.html";
       return;
     }
 

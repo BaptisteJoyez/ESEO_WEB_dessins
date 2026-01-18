@@ -14,10 +14,6 @@
   border-radius: 10px;
 }
 
-.connexion-actions {
-  /* cleaned duplicate block — spacing handled above */
-}
-
 /* Override global label sizing for this page's form */
 
 .subtitle {
