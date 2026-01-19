@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="submit_drawing.css" />
+    <title>Submit drawing</title>
+  </head>
+
+  <body>
+    <main class="page">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">Submission</p>
+          <h1>Submit your drawing</h1>
+          <p class="subtitle">Drop your image and send it to the jury.</p>
+        </div>
+        <a class="btn btn-secondary" href="../dashboard/dashboard.html">Retour au dashboard</a>
+      </header>
+
+      <div class="container-1">
+        <div class="container-2 Submition">
+          <div class="drop-box" id="drop-box">
+            <input id="drawing-input" type="file" accept="image/*" title="sugmit" />
+            <div class="drop-content">
+              <p>Drop your image here</p>
+              <span>or click to choose a file</span>
+            </div>
+          </div>
+          <div class="action">
+            <button type="button" onclick="submit_drawing()" class="sub">send</button>
+            <button type="button" onclick="reset()" class="reset">rest</button>
+          </div>
+        </div>
+        <div class="container-2 informations">
+          <div class="previous" id="preview">
+            <p class="placeholder">Preview area</p>
+          </div>
+          <div class="informations" id="file-info">
+            <p class="placeholder">No file selected yet.</p>
+          </div>
+        </div>
+      </div>
+      <div class="container-1">
+        <h1>Conseille :</h1>
+        <div class="advise">
+          <p>📸 Conseils pour prendre une belle photo de ton dessin</p>
+          <p>Pour que ton dessin soit bien évalué, prends quelques secondes pour vérifier ces points avant l’envoi :</p>
+          <div class="container-2">
+            <div class="container-3">
+              <p class="sub-title">Utilise une bonne lumière</p>
+              <ul>
+                <li>Privilégie la lumière naturelle (près d’une fenêtre)</li>
+                <li>Évite les ombres et les lumières trop fortes ou trop jaunes</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="container-2">
+            <div class="container-3">
+              <p class="sub-title">Prends la photo bien en face</p>
+              <ul>
+                <li>Place l’appareil parallèle au dessin</li>
+                <li>Évite les photos penchées ou prises de côté</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="container-2">
+            <div class="container-3">
+              <p class="sub-title">Cadre uniquement le dessin</p>
+              <ul>
+                <li>Le dessin doit occuper la majorité de l’image</li>
+                <li>Évite d’inclure la table, le sol ou des objets autour</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="container-2">
+            <div class="container-3">
+              <p class="sub-title">Vérifie que l’image est nette</p>
+              <ul>
+                <li>Assure-toi que la photo n’est pas floue</li>
+                <li>Nettoie la lentille de l’appareil si nécessaire</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="container-2">
+            <div class="container-3">
+              <p class="sub-title">Évite les reflets</p>
+              <ul>
+                <li>Attention aux reflets sur les feuilles brillantes</li>
+                <li>Change légèrement l’angle si un reflet apparaît</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="container-2">
+            <div class="container-3">
+              <p class="sub-title">Utilise une résolution correcte</p>
+              <ul>
+                <li>Ne zoome pas excessivement lors de la prise de vue</li>
+                <li>Garde la qualité originale de la photo si possible</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="submit_drawing.js"></script>
+  </body>
+</html>
