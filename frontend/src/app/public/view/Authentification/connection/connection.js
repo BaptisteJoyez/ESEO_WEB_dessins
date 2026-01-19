@@ -37,7 +37,7 @@ async function sender(userData_) {
 
   try {
     if (!MOCK_MODE) {
-      const res = await fetch(BASE_URL, {
+      const res = await fetch("/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
