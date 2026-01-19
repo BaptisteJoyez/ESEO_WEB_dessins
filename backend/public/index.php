@@ -1,6 +1,9 @@
 <?php
- 
-session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+require_once __DIR__ . "/../src/services/SessionService.php";
+
 header("Content-Type: application/json");
  
 // CORS DEV (à ajuster plus tard)
@@ -22,6 +25,13 @@ if ($uri === "/api/user/login" && $_SERVER["REQUEST_METHOD"] === "POST") {
     (new AuthController())->login();
     exit;
 }
+
+if ($uri === "/api/authClient" && $_SERVER["REQUEST_METHOD"] === "GET") {
+    require_once "../src/controllers/AuthController.php";
+    (new AuthController())->userAcces();
+    exit;
+}
+
  
 // 404 fallback
 http_response_code(404);

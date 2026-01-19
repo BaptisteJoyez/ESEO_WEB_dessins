@@ -1,5 +1,3 @@
-const MOCK_MODE = true; // ⚠️ TEMPORAIRE (DEV ONLY)
-
 async function loadConfig() {
   // Cache-bust to ensure config is reloaded on refresh.
   const module = await import("../../../assets/js/config.js");
@@ -36,32 +34,18 @@ async function sender(userData_) {
   let data = null;
 
   try {
-    if (!MOCK_MODE) {
-      const res = await fetch("/api/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(userData_),
-      });
+    const res = await fetch(BASE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(userData_),
+    });
 
-      if (!res.ok) {
-        throw new Error(`Request failed: ${res.status}`);
-      }
-
-      data = await res.json();
-    } else {
-      // 🎭 MOCK BACKEND
-      data = {
-        verified: true,
-        user: {
-          firstName: "John",
-          lastName: "Doe",
-          role: "competitor",
-          club: "Mock Club",
-        },
-      };
+    if (!res.ok) {
+      throw new Error(`Request failed: ${res.status}`);
     }
 
+    data = await res.json();
     if (data.verified) {
       location.href = BOARD_URL;
     } else {
