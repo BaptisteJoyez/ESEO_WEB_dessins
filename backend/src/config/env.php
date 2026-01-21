@@ -1,6 +1,6 @@
 <?php
 
-$envPath = __DIR__ . '/../.env';
+$envPath = __DIR__ . '/../../.env';
 
 if (!file_exists($envPath)) {
     die("Missing .env file");
@@ -17,3 +17,5 @@ foreach ($lines as $line) {
 
     $_ENV[$key] = trim($value);
 }
+
+

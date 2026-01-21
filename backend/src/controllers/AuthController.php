@@ -30,4 +30,23 @@ class AuthController
             "received" => $data
         ]);
     }
+
+    public function userAcces()
+    {
+        require_once __DIR__ . "/../services/SessionService.php";
+
+        if (SessionService::isAuthenticated()) {
+            $user = SessionService::getUser();
+            echo json_encode([
+                "access" => true,
+                "user" => $user
+            ]);
+        } else {
+            http_response_code(401);
+            echo json_encode([
+                "access" => false,
+                "message" => "User not authenticated"
+            ]);
+        }
+    }
 }
