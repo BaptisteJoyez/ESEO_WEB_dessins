@@ -30,17 +30,17 @@ class AuthController
             $pdo = getPDO();
 
             $sql = "
-    		SELECT 
-        		u.user_id,
-        		u.first_name,
-        		u.last_name,
-        		u.role,
-        		u.password, 
-        		c.club_name
-    			FROM users u
-    			LEFT JOIN club c ON c.club_id = u.club_id
-    			WHERE u.login = :login
-    			LIMIT 1
+    	SELECT
+            u.numUtilisateur,
+            u.prenom,
+            u.nom,
+            u.motDePasse,
+            c.nomClub
+        FROM Utilisateur u
+        LEFT JOIN Club c ON c.numClub = u.numClub
+        WHERE u.login = 'alice.martin1'
+        LIMIT 1;
+ 
 		";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([

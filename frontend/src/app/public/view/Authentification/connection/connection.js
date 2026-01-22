@@ -16,10 +16,10 @@ async function login(event) {
   event.preventDefault();
   const usernameEl = document.getElementById("username");
   const passwordEl = document.getElementById("password");
-  
+
   userData.login = usernameEl ? usernameEl.value : ""; // ✅ Changé de 'username' à 'login'
   userData.password = passwordEl ? passwordEl.value : "";
-  
+
   console.log("userData:", userData); // ✅ Utilise console.log au lieu d'alert
   await sender(userData);
 }
@@ -38,13 +38,13 @@ async function sender(userData_) {
       credentials: "include",
       body: JSON.stringify(userData_),
     });
-    
+
     if (!res.ok) {
-      throw new Error (`Request failed: ${res.status}`); // ✅ Corrigé
+      throw new Error(`Request failed: ${res.status}`); // ✅ Corrigé
     }
-    
+
     data = await res.json();
-    
+
     if (data.verified) {
       location.href = BOARD_URL;
     } else {
