@@ -2,59 +2,75 @@
 
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../services/SessionService.php';
-require_once __DIR__ . '/../models/Drawing.php';
 
-
-
-class ConcourController
+class ConcoursController
 {
-    public function getConcour(): void
+    /**
+     * Récupère les concours d'un utilisateur
+     */
+    public function getConcours(): void
     {
-
-        // 🔹 Lecture du JSON envoyé par le frontend
+        // Lecture des données JSON
         $data = json_decode(file_get_contents("php://input"), true);
 
-        if (
-            !$data ||
-            !isset($data['drawing'], $data['login'], $data['commentaire'], $data['format'], $data['technique'], $data['numConcours'])
-        ) {
-            http_response_code(response_code: 400);
-            echo json_encode([
-                "verified" => false,
-                "message" => "Missing credentials"
-            ]);
+        // Validation : seul le login est nécessaire pour récupérer les concours
+        if (!isset($data['login'])) {
+            $this->sendError(400, "Login manquant");
             return;
         }
 
         try {
-            // ✅ Connexion DB
             $pdo = getPDO();
 
-            $sql = `
-		`;
+            // Récupération des concours de l'utilisateur
+            $sql = "
+                SELECT DISTINCT
+                    c.numConcours,
+                    c.theme AS description_concours,
+                    c.dateDebut,
+                    c.dateFin,
+                    c.etat,
+                    c.lieu
+                FROM Concours c
+                JOIN ParticipeCompetiteur pc ON c.numConcours = pc.numConcours
+                JOIN Utilisateur u ON pc.numCompetiteur = u.numUtilisateur
+                WHERE u.login = :login
+                AND c.etat IN ('pas commence', 'en cours', 'attente')
+                ORDER BY c.dateDebut ASC
+            ";
+
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([
-                "login" => $data['login']
-            ]);
+            $stmt->execute(['login' => $data['login']]);
 
-            $user = $stmt->fetch();
+            $concours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // ❌ Utilisateur inexistant ou mot de passe invalide
-            if (!$user || !password_verify($data['password'], $user['password'])) {
-                http_response_code(401);
-                echo json_encode([
-                    "verified" => false,
-                    "message" => "Invalid credentials"
-                ]);
-                return;
-            }
-        } catch (Throwable $e) {
-            http_response_code(500);
+            // ✅ Succès (même si aucun concours trouvé)
+            http_response_code(200);
             echo json_encode([
-                "verified" => false,
-                "message" => "Server error",
-                "error" => $e->getMessage() // ⚠️ à retirer en prod
+                "success" => true,
+                "data" => $concours,
+                "count" => count($concours)
             ]);
+        } catch (Throwable $e) {
+            $this->sendError(500, "Erreur serveur", $e->getMessage());
         }
+    }
+
+    /**
+     * Envoie une réponse d'erreur JSON
+     */
+    private function sendError(int $code, string $message, ?string $details = null): void
+    {
+        http_response_code($code);
+        $response = [
+            "success" => false,
+            "message" => $message
+        ];
+
+        if ($details && getenv('APP_ENV') !== 'production') {
+            $response['error'] = $details;
+        }
+
+        echo json_encode($response);
     }
 }
