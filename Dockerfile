@@ -5,8 +5,10 @@ RUN a2enmod rewrite
 
 # Dépendances système
 RUN apt-get update && apt-get install -y \
-    libmariadb-dev \
-    && docker-php-ext-install pdo pdo_mysql
-
-# Nettoyage
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    libpq-dev \
+    default-mysql-client \
+    libzip-dev \
+    libonig-dev \
+    && docker-php-ext-install pdo_mysql pdo_pgsql pgsql \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
