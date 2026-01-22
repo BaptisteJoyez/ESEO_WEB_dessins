@@ -8,22 +8,17 @@ const config = await loadConfig();
 const BASE_URL_ = config.API.BASE_URL + "/authClient";
 
 export async function getSessionUser() {
-  console.log("fetching session user from ", BASE_URL_);
   try {
-    const res = await fetch(BASE_URL_, {
-      credentials: "include", // IMPORTANT (cookie session)
+    const res = await fetch("/api/authClient", {
+      credentials: "include",
     });
 
-    if (!res.ok) {
-      console.log("response not ok");
-      return null;
-    }
+    if (!res.ok) return null;
 
     const data = await res.json();
-    console.log("session user data ", data);
-    return data.authenticated ? data : null;
+    return data.access ? data : null;
   } catch (e) {
-    console.warn("Error fetching session user", e);
+    console.error("Session fetch failed", e);
     return null;
   }
 }

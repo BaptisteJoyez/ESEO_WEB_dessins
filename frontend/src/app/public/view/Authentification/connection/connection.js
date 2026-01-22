@@ -40,7 +40,7 @@ async function sender(userData_) {
     });
     
     if (!res.ok) {
-      throw new Error(`Request failed: ${res.status}`); // ✅ Corrigé
+      throw new Error (`Request failed: ${res.status}`); // ✅ Corrigé
     }
     
     data = await res.json();

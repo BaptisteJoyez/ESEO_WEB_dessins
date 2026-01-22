@@ -1,7 +1,4 @@
 import { getSessionUser } from "../../../assets/js/authClient.js";
-const dev = {
-  role: "sudo",
-};
 /* =========================================================
        CONFIG LOADING
     ========================================================= */
@@ -32,10 +29,11 @@ async function initDashboard() {
   }
 
   // 🔐 Not authenticated → redirect to login no need in dev need to be reactivated when backend is set up
-  /*if (!user) {
+  if (!user) {
         window.location.href = loginUrl;
         return;
-      }*/
+      }
+
   console.log("user ", user);
 
   // backend may return { user: {...} } OR {...}
@@ -47,6 +45,8 @@ async function initDashboard() {
     safeUser = user;
   }
 
+  console.log("user safe :", safeUser);
+
   configureDashboard(safeUser);
 }
 
@@ -54,11 +54,7 @@ async function initDashboard() {
    DASHBOARD CONFIG
 ========================================================= */
 function configureDashboard(user) {
-  if (!user || !user.role) {
-    applyRoleRestrictions(dev.role); // penser a le retirer merci
-  } else {
-    applyRoleRestrictions(user.role);
-  }
+  applyRoleRestrictions(user.role);
   displayUserInfo(user);
 }
 
