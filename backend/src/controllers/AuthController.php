@@ -29,7 +29,7 @@ class AuthController
             // ✅ Connexion DB
             $pdo = getPDO();
 
-	$sql = "
+            $sql = "
     		SELECT 
         		u.user_id,
         		u.first_name,
@@ -72,7 +72,6 @@ class AuthController
                 "verified" => true,
                 "user" => $_SESSION["user"]
             ]);
-
         } catch (Throwable $e) {
             http_response_code(500);
             echo json_encode([

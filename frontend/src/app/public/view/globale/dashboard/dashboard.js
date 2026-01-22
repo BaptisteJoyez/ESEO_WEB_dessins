@@ -30,9 +30,9 @@ async function initDashboard() {
 
   // 🔐 Not authenticated → redirect to login no need in dev need to be reactivated when backend is set up
   if (!user) {
-        window.location.href = loginUrl;
-        return;
-      }
+    window.location.href = loginUrl;
+    return;
+  }
 
   console.log("user ", user);
 
@@ -47,14 +47,13 @@ async function initDashboard() {
 
   console.log("user safe :", safeUser);
 
-  configureDashboard(safeUser);
+  //configureDashboard(safeUser);
 }
 
 /* =========================================================
    DASHBOARD CONFIG
 ========================================================= */
 function configureDashboard(user) {
-  applyRoleRestrictions(user.role);
   displayUserInfo(user);
 }
 
@@ -74,52 +73,6 @@ function setText(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text;
 }
-
-/* =========================================================
-   ROLE MANAGEMENT
-========================================================= */
-function applyRoleRestrictions(role) {
-  const safeRole = typeof role === "string" && role.trim() ? role.trim().toLowerCase() : "competitor";
-
-  const hide = (...ids) =>
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.hidden = true;
-    });
-
-  console.log("Dashboard role:", safeRole);
-
-  switch (safeRole) {
-    case "competitor":
-      hide("assess", "assign_assessors", "close_competition", "overview_stat", "manage_members", "manage_competition");
-      break;
-
-    case "assessor":
-      hide("club_drawing", "submit_drawing", "assign_assessors", "close_competition", "manage_members", "manage_competition");
-      break;
-
-    case "president":
-      hide("club_drawing", "submit_drawing", "assess", "manage_members", "manage_competition");
-      break;
-
-    case "director":
-      hide("submit_drawing", "assess", "assign_assessors", "close_competition", "manage_competition");
-      break;
-
-    case "admin":
-      hide("submit_drawing", "assess", "assign_assessors", "close_competition", "club_drawing", "my_drawings", "my_results");
-      break;
-    case "restricted":
-      hide("submit_drawing", "assess", "assign_assessors", "close_competition", "club_drawing", "my_drawings", "my_results", "overview_stat", "manage_members", "manage_competition");
-      break;
-    case "sudo":
-      hide();
-      break;
-    default:
-      console.warn("Unknown user role:", role);
-  }
-}
-
 /* =========================================================
    BOOTSTRAP
 ========================================================= */
