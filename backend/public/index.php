@@ -51,6 +51,13 @@ if ($uri === "api/submit/drawing" && $_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 
+if ($uri === "api/get/concours" && $_SERVER["REQUEST_METHOD"] === "POST") {
+    require_once "../src/models/Concour.php";
+    (new ConcourController())->getConcour();
+    exit;
+}
+
+
 // 404 fallback
 http_response_code(404);
 echo json_encode(["message" => "Not found"]);

@@ -6,9 +6,9 @@ require_once __DIR__ . '/../models/Drawing.php';
 
 
 
-class DrawingController
+class ConcourController
 {
-    public function setDrawing(): void
+    public function getConcour(): void
     {
 
         // 🔹 Lecture du JSON envoyé par le frontend
@@ -31,12 +31,6 @@ class DrawingController
             $pdo = getPDO();
 
             $sql = `
-            INSERT INTO Dessin ( commentaire, classement, dateRemise, format, technique, numConcours, leDessin, numCompetiteur ) 
-            SELECT '','' , CURRENT_DATE, '', '', , '', c.numCompetiteur 
-            FROM Competiteur c 
-            INNER JOIN Utilisateur u ON c.numCompetiteur = u.numUtilisateur 
-            WHERE u.nom = 'Robert' AND u.prenom = 'Chloe' LIMIT 1;
-    		
 		`;
             $stmt = $pdo->prepare($sql);
             $stmt->execute([

@@ -70,6 +70,12 @@ body {
   gap: 18px;
 }
 
+.container-1 > h2 {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+}
+
 .container-1 > h1 {
   grid-column: 1 / -1;
   margin: 0;
@@ -124,6 +130,51 @@ body {
   background: var(--panel);
   box-shadow: 0 18px 40px rgba(5, 10, 26, 0.35);
   backdrop-filter: blur(12px) saturate(140%);
+}
+
+.image-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.image-options .container-2 {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.image-options .container-2 p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.image-options textarea,
+.image-options select,
+.image-options input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--stroke);
+  background: rgba(8, 12, 24, 0.65);
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.image-options textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.image-options textarea::placeholder {
+  color: rgba(247, 248, 255, 0.45);
+}
+
+.image-options textarea:focus,
+.image-options select:focus,
+.image-options input[type="text"]:focus {
+  outline: none;
+  border-color: rgba(76, 195, 255, 0.7);
+  box-shadow: 0 0 0 2px rgba(76, 195, 255, 0.15);
 }
 
 .Submition {
@@ -287,6 +338,9 @@ body {
 
 @media (max-width: 900px) {
   .container-1 {
+    grid-template-columns: 1fr;
+  }
+  .image-options {
     grid-template-columns: 1fr;
   }
   .page-header {

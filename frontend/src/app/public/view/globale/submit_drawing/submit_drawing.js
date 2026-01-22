@@ -3,9 +3,19 @@ import { ImageToBase64 } from "../../../assets/js/ImageBase64/Base64.js";
 const dev = {
   role: "sudo",
 };
+
+const formatEnum = {
+  A4: "A4",
+  A3: "A3",
+  A2: "A2",
+  A1: "A1",
+  A0: "A0",
+  Numerical: "Numérique",
+};
+
 /* =========================================================
-       CONFIG LOADING
-    ========================================================= */
+           CONFIG LOADING
+        ========================================================= */
 async function loadConfig() {
   try {
     const module = await import("../../../assets/js/config.js");
@@ -23,6 +33,11 @@ const previewBox = document.getElementById("preview");
 const infoBox = document.getElementById("file-info");
 const defaultPreview = previewBox ? previewBox.innerHTML : "";
 const defaultInfo = infoBox ? infoBox.innerHTML : "";
+
+const commentaireInput = document.getElementById("commentaire-input");
+const formatInput = document.getElementById("formatInput");
+const techniqueInput = document.getElementById("technique");
+const numConcursInput = document.getElementById("numConcours");
 
 let selectedFile = null;
 let selectedBase64 = null;
@@ -51,6 +66,102 @@ async function initDashboard() {
     safeUser = user.user;
   } else {
     safeUser = user;
+  }
+
+  populateFormatOptions();
+  await populateConcoursOptions(safeUser);
+}
+
+function populateFormatOptions() {
+  if (!formatInput) return;
+  formatInput.innerHTML = "";
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  placeholder.textContent = "Choisir un format";
+  formatInput.appendChild(placeholder);
+
+  Object.entries(formatEnum).forEach(([value, label]) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    formatInput.appendChild(option);
+  });
+}
+
+async function populateConcoursOptions(user) {
+  if (!numConcursInput) return;
+  numConcursInput.innerHTML = "";
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  placeholder.textContent = "Chargement des concours...";
+  numConcursInput.appendChild(placeholder);
+
+  const BASE_URL = `${config?.API?.BASE_URL || "/api"}/get/concours`;
+  const nom = user.lastName || user.last_name || user.nom || user.name || "";
+  const prenom = user.firstName || user.first_name || user.prenom || "";
+
+  try {
+    const res = await fetch(BASE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ nom, prenom }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Request failed: ${res.status}`);
+    }
+
+    const data = await res.json();
+    const items = Array.isArray(data) ? data : Array.isArray(data.concours) ? data.concours : Array.isArray(data.data) ? data.data : [];
+
+    numConcursInput.innerHTML = "";
+    if (!items.length) {
+      const empty = document.createElement("option");
+      empty.value = "";
+      empty.disabled = true;
+      empty.selected = true;
+      empty.textContent = "Aucun concours disponible";
+      numConcursInput.appendChild(empty);
+      return;
+    }
+
+    const choose = document.createElement("option");
+    choose.value = "";
+    choose.disabled = true;
+    choose.selected = true;
+    choose.textContent = "Choisir un concours";
+    numConcursInput.appendChild(choose);
+
+    items.forEach((item) => {
+      const option = document.createElement("option");
+
+      if (typeof item === "string" || typeof item === "number") {
+        option.value = String(item);
+        option.textContent = String(item);
+      } else {
+        const value = item.id || item.numConcours || item.num_concours || item.num || item.value || "";
+        const label = item.label || item.name || item.title || item.titre || item.nom || (value ? `Concours ${value}` : "Concours");
+        option.value = String(value);
+        option.textContent = String(label);
+      }
+
+      numConcursInput.appendChild(option);
+    });
+  } catch (error) {
+    console.warn("Unable to load concours list", error);
+    numConcursInput.innerHTML = "";
+    const errorOption = document.createElement("option");
+    errorOption.value = "";
+    errorOption.disabled = true;
+    errorOption.selected = true;
+    errorOption.textContent = "Erreur de chargement";
+    numConcursInput.appendChild(errorOption);
   }
 }
 
@@ -144,11 +255,6 @@ async function submit_drawing() {
     return null;
   }
 
-  const commentaireInput = document.getElementById("commentaire-input");
-  const commentaire = commentaireInput ? commentaireInput.value.trim() : "";
-  const formatInput = document.getElementById("format-input");
-  const format = formatInput ? formatInput.value : "";
-
   setInfoMessage("Sending...", "");
 
   const BASE_URL = `${config?.API?.BASE_URL || "/api"}/submit/drawing`;
@@ -163,9 +269,10 @@ async function submit_drawing() {
       image: imageBase64,
       name: selectedFile.name,
       mime: selectedFile.type || "image/png",
-      commentaire: commentaire,
-      format: format,
-      numConcurs: numConcurs,
+      commentaire: commentaireInput ? commentaireInput.value.trim() : "",
+      format: formatInput ? formatInput.value : "",
+      technique: techniqueInput ? techniqueInput.value.trim() : "",
+      numConcurs: numConcursInput ? parseInt(numConcursInput.value, 10) || 0 : 0,
     };
 
     const res = await fetch(BASE_URL, {
