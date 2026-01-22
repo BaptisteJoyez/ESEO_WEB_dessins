@@ -21,7 +21,7 @@ class AuthController
             return;
         }
 
-        require_once __DIR__ . "/../../config/database.php";
+	require_once __DIR__ . "/../config/database.php";
 
         $sql = "
             SELECT 

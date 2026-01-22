@@ -9,7 +9,7 @@ const BOARD_URL = config.BOARD.BASE_URL;
 const BASE_URL = config.API.BASE_URL + "/user/login";
 
 const userData = {
-  username: "",
+  login: "",
   password: "",
 };
 
