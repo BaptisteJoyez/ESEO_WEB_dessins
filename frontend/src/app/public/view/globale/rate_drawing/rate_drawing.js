@@ -83,13 +83,13 @@ function openImageModal(imageSrc) {
   const modalImage = document.getElementById('modal-image');
   
   modalImage.src = imageSrc;
-  modal.style.display = 'flex';
+  modal.classList.add('show'); // Ajout de la classe au lieu de style.display
 }
 
 // Fonction pour fermer le modal
 function closeImageModal() {
   const modal = document.getElementById('image-modal');
-  modal.style.display = 'none';
+  modal.classList.remove('show'); // Retrait de la classe
 }
 
 // Variables pour stocker le dessin en cours d'évaluation
@@ -138,13 +138,13 @@ function openRatingModal(drawingId) {
   document.getElementById('evaluator-firstname').value = '';
   document.getElementById('evaluator-lastname').value = '';
   
-  modal.style.display = 'flex';
+  modal.classList.add('show'); // Ajout de la classe
 }
 
 // Fonction pour fermer le modal de notation
 function closeRatingModal() {
   const modal = document.getElementById('rating-modal');
-  modal.style.display = 'none';
+  modal.classList.remove('show'); // Retrait de la classe
   currentDrawingId = null;
 }
 
