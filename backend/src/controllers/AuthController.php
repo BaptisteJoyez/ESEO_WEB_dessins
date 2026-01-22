@@ -49,7 +49,7 @@ class AuthController
             $user = $stmt->fetch();
 
             // ❌ Utilisateur inexistant ou mot de passe invalide
-            if (!$user || !password_verify($data['password'], $user['password'])) {
+            if (!$user || !password_verify($data['password'], $user['motDePasse'])) {
                 http_response_code(401);
                 echo json_encode([
                     "verified" => false,
