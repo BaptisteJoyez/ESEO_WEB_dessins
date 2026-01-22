@@ -38,6 +38,18 @@ if ($uri === "/api/test-db" && $_SERVER["REQUEST_METHOD"] === "GET") {
     exit;
 }
 
+if ($uri === "api/user/logout" && $_SERVER["REQUEST_METHOD"] === "POST") {
+    require_once "../src/services/SessionService.php";
+    (new SessionService())->logout();
+    exit;
+}
+
+
+if ($uri === "api/submit/drawing" && $_SERVER["REQUEST_METHOD"] === "POST") {
+    require_once "../src/models/Drawing.php";
+    (new DrawingController())->setDrawing();
+    exit;
+}
 
 // 404 fallback
 http_response_code(404);

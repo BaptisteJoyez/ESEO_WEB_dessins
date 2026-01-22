@@ -28,10 +28,10 @@ async function initDashboard() {
   }
 
   // 🔐 Not authenticated → redirect to login no need in dev need to be reactivated when backend is set up
-  // if (!user) {
-  //   window.location.href = loginUrl;
-  //   return;
-  // }
+  if (!user) {
+    window.location.href = loginUrl;
+    return;
+  }
 
   // backend may return { user: {...} } OR {...}
   let safeUser;

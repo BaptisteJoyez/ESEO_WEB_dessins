@@ -1,4 +1,5 @@
 import { getSessionUser } from "../../../assets/js/authClient.js";
+import { ImageToBase64 } from "../../../assets/js/ImageBase64/Base64.js";
 const dev = {
   role: "sudo",
 };
@@ -38,10 +39,10 @@ async function initDashboard() {
   }
 
   // 🔐 Not authenticated → redirect to login no need in dev need to be reactivated when backend is set up
-  // if (!user) {
-  //   window.location.href = loginUrl;
-  //   return;
-  // }
+  if (!user) {
+    window.location.href = loginUrl;
+    return;
+  }
 
   // backend may return { user: {...} } OR {...}
   let safeUser;
@@ -143,6 +144,11 @@ async function submit_drawing() {
     return null;
   }
 
+  const commentaireInput = document.getElementById("commentaire-input");
+  const commentaire = commentaireInput ? commentaireInput.value.trim() : "";
+  const formatInput = document.getElementById("format-input");
+  const format = formatInput ? formatInput.value : "";
+
   setInfoMessage("Sending...", "");
 
   const BASE_URL = `${config?.API?.BASE_URL || "/api"}/submit/drawing`;
@@ -157,6 +163,9 @@ async function submit_drawing() {
       image: imageBase64,
       name: selectedFile.name,
       mime: selectedFile.type || "image/png",
+      commentaire: commentaire,
+      format: format,
+      numConcurs: numConcurs,
     };
 
     const res = await fetch(BASE_URL, {
@@ -196,24 +205,6 @@ function formatBytes(bytes) {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   const value = bytes / Math.pow(1024, i);
   return `${value.toFixed(value >= 10 || i === 0 ? 0 : 1)} ${sizes[i]}`;
-}
-
-function ImageToBase64(image) {
-  if (!image) return Promise.resolve(null);
-
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result !== "string") {
-        resolve(null);
-        return;
-      }
-      const [, base64] = reader.result.split(",");
-      resolve(base64 || null);
-    };
-    reader.onerror = () => reject(reader.error || new Error("Unable to read file"));
-    reader.readAsDataURL(image);
-  });
 }
 
 if (dropBox && fileInput) {
