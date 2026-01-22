@@ -1,5 +1,4 @@
 async function loadConfig() {
-  // Cache-bust to ensure config is reloaded on refresh.
   const module = await import("../../../assets/js/config.js");
   return module.default;
 }
@@ -17,11 +16,11 @@ async function login(event) {
   event.preventDefault();
   const usernameEl = document.getElementById("username");
   const passwordEl = document.getElementById("password");
-  userData.username = usernameEl ? usernameEl.value : "";
+  
+  userData.login = usernameEl ? usernameEl.value : ""; // ✅ Changé de 'username' à 'login'
   userData.password = passwordEl ? passwordEl.value : "";
-
-  alert(`userData: ${userData.username}, ${userData.password}`);
-
+  
+  console.log("userData:", userData); // ✅ Utilise console.log au lieu d'alert
   await sender(userData);
 }
 
@@ -32,7 +31,6 @@ if (form) {
 
 async function sender(userData_) {
   let data = null;
-
   try {
     const res = await fetch(BASE_URL, {
       method: "POST",
@@ -40,12 +38,13 @@ async function sender(userData_) {
       credentials: "include",
       body: JSON.stringify(userData_),
     });
-
+    
     if (!res.ok) {
-      throw new Error(`Request failed: ${res.status}`);
+      throw new Error(`Request failed: ${res.status}`); // ✅ Corrigé
     }
-
+    
     data = await res.json();
+    
     if (data.verified) {
       location.href = BOARD_URL;
     } else {
