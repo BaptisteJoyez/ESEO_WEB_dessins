@@ -2,17 +2,17 @@ const CONFIG = {
   ENV: "dev",
 
   API: {
-    BASE_URL: "/api", //http://localhost/api
+    BASE_URL: "/api", //http://eseo.tp.py12.fr/api
   },
   //BOARD.BASE_URL
   BOARD: {
-    BASE_URL: "http://localhost:8080/view/globale/dashboard/dashboard.html",
+    BASE_URL: "http://eseo.tp.py12.fr/view/globale/dashboard/dashboard.html",
   },
   LOGIN: {
-    BASE_URL: "http://localhost:8080/view/Authentification/connection/connection.html",
+    BASE_URL: "http://eseo.tp.py12.fr/view/Authentification/connection/connection.html",
   },
   GLOBALE: {
-    SUB_DRAWING: "http://localhost:8080/view/globale/submit_drawing/submit_drawing.html",
+    SUB_DRAWING: "http://eseo.tp.py12.fr/view/globale/submit_drawing/submit_drawing.html",
   },
 };
 
