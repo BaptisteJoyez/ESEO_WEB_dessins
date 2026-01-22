@@ -148,40 +148,58 @@ h2 {
   margin-top: 10px;
 }
 
-thead th {
-  text-align: left;
-  padding: 12px;
-  border-bottom: 2px solid var(--glass-border);
-  color: var(--accent-color);
+.tableau thead th {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 2px solid var(--glass-border);
+    color: var(--accent-color);
+    font-weight: 600;
 }
 
 .row-info td {
-  padding: 12px;
-  font-weight: bold;
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.row-info {
-  background: rgba(255, 255, 255, 0.05);
+.drawing-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mini-preview {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0,0,0,0.3);
+}
+
+.text-accent {
+    color: var(--accent-color);
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
 .row-note td {
-  padding: 0 12px 15px 12px;
-  border-bottom: 1px solid var(--glass-border);
+    padding: 0 15px 15px 15px;
+    border: none;
 }
 
 .note-content {
-  font-size: 0.9em;
-  font-style: italic;
-  opacity: 0.8;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  border-radius: 8px;
-  line-height: 1.4;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 15px;
+    border-radius: 0 10px 10px 10px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    border-left: 3px solid var(--accent-color);
+    margin-left: 60px;
 }
 
-.row-info:hover, .row-info:hover + .row-note td {
-  background: rgba(255, 255, 255, 0.15);
-  transition: 0.3s;
+.row-info:hover {
+    background-color: var(--row-hover);
 }
 
 .carousel-control-prev-icon,
