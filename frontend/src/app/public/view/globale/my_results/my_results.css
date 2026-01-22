@@ -127,10 +127,61 @@ body {
 }
 
 .tableau{
+  display: flex;
+  justify-content: center;
   margin-top: 12px;
   text-align: center;
   background-color: rgba(0, 255, 255, 0.7);
   border-radius: 20px;
+}
+
+h2 {
+  margin-top: 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+thead th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid var(--glass-border);
+  color: var(--accent-color);
+}
+
+.row-info td {
+  padding: 12px;
+  font-weight: bold;
+}
+
+.row-info {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.row-note td {
+  padding: 0 12px 15px 12px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.note-content {
+  font-size: 0.9em;
+  font-style: italic;
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+.row-info:hover, .row-info:hover + .row-note td {
+  background: rgba(255, 255, 255, 0.15);
+  transition: 0.3s;
 }
 
 .carousel-control-prev-icon,

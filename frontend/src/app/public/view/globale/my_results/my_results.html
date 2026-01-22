@@ -15,7 +15,7 @@
         <div>
           <p class="eyebrow">Galerie</p>
           <h1>Mes Résultats</h1>
-          <p class="subtitle">Fais defiler tes dessins recus depuis le backend.</p>
+          <p class="subtitle">Fais defiler tes dessins reçus depuis le backend.</p>
         </div>
         <a class="btn btn-secondary" href="../dashboard/dashboard.html">Retour au dashboard</a>
       </header>
@@ -52,19 +52,34 @@
         </div>
       </section>
 
-      <section class="notes">
+      <section class="glass-card notes">
         <h2>Tableau des notes</h2>
-        <table class="glass-card tableau">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Dessin</th>
-              <th scope="col">Note</th>
-            </tr>
-          </thead>
+        <table class="tableau">
           <tbody id="notes-table-body">
-            <tr>
-              <td colspan="3">Aucune note disponible pour le moment.</td>
+            <tr class="row-info">
+              <td>01</td>
+              <td>Portrait fusain</td>
+              <td>18/20</td>
+            </tr>
+            <tr class="row-note">
+              <td colspan="3">
+                <div class="note-content">
+                  <strong>Note :</strong> Très bon travail sur les ombres portées et le contraste, attention toutefois aux proportions du nez.
+                </div>
+              </td>
+            </tr>
+      
+            <tr class="row-info">
+              <td>02</td>
+              <td>Paysage aquarelle</td>
+              <td>15/20</td>
+            </tr>
+            <tr class="row-note">
+              <td colspan="3">
+                <div class="note-content">
+                  <strong>Note :</strong> Les couleurs sont vives, mais le séchage n'était pas complet avant la deuxième couche.
+              </div>
+              </td>
             </tr>
           </tbody>
         </table>
