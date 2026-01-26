@@ -20,15 +20,16 @@
 
       <div class="container-1 image-options">
         <div class="container-2 Submition">
+          <p>Image *</p>
           <div class="drop-box" id="drop-box">
             <input id="drawing-input" type="file" accept="image/*" title="sugmit" />
             <div class="drop-content">
-              <p>Drop your image here</p>
+              <p>Drop your image here *</p>
               <span>or click to choose a file</span>
             </div>
           </div>
           <div class="action">
-            <button type="button" onclick="submit_drawing()" class="sub">send</button>
+            <button type="button" onclick="submit_drawing()" class="sub" id="submit-button" disabled>send</button>
             <button type="button" onclick="reset()" class="reset">rest</button>
           </div>
         </div>
@@ -41,18 +42,24 @@
           </div>
         </div>
       </div>
-      <div class="container-1">
+      <div class="container-1 options-section">
         <h2>Options de l'image</h2>
-        <div class="container-2">
-          <p>commentaire :</p>
-          <textarea name="commentaire" id="commentaire-input" title="commentaire-input" placeholder="Make your comment"></textarea>
-        </div>
-        <div class="container-2">
-          <select name="formatInput" id="formatInput" title="formatInput"></select>
-        </div>
-        <div class="container-2">Tecchnique employé : <input type="text" title="technique" name="technique" id="technique" /></div>
-        <div class="container-2">
-          <select name="numConcours" title="numConcours" id="numConcours"></select>
+        <div class="options-grid">
+          <div class="container-2 option-comment">
+            <p>commentaire :</p>
+            <textarea name="commentaire" id="commentaire-input" title="commentaire-input" placeholder="Make your comment"></textarea>
+          </div>
+          <div class="options-right">
+            <div class="container-2">
+              <p>Format *</p>
+              <select name="formatInput" id="formatInput" title="formatInput"></select>
+            </div>
+            <div class="container-2">Tecchnique employé * : <input type="text" title="technique" name="technique" id="technique" /></div>
+            <div class="container-2">
+              <p>Concours *</p>
+              <select name="numConcours" title="numConcours" id="numConcours"></select>
+            </div>
+          </div>
         </div>
       </div>
 

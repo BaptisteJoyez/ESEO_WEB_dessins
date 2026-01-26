@@ -38,6 +38,7 @@ const commentaireInput = document.getElementById("commentaire-input");
 const formatInput = document.getElementById("formatInput");
 const techniqueInput = document.getElementById("technique");
 const numConcursInput = document.getElementById("numConcours");
+const submitButton = document.getElementById("submit-button");
 
 let selectedFile = null;
 let selectedBase64 = null;
@@ -70,6 +71,7 @@ async function initDashboard() {
 
   populateFormatOptions();
   await populateConcoursOptions(safeUser);
+  updateSubmitState();
 }
 
 function populateFormatOptions() {
@@ -88,6 +90,7 @@ function populateFormatOptions() {
     option.textContent = label;
     formatInput.appendChild(option);
   });
+  updateSubmitState();
 }
 
 async function populateConcoursOptions(user) {
@@ -154,6 +157,7 @@ async function populateConcoursOptions(user) {
 
       numConcursInput.appendChild(option);
     });
+    updateSubmitState();
   } catch (error) {
     console.warn("Unable to load concours list", error);
     numConcursInput.innerHTML = "";
@@ -163,7 +167,21 @@ async function populateConcoursOptions(user) {
     errorOption.selected = true;
     errorOption.textContent = "Erreur de chargement";
     numConcursInput.appendChild(errorOption);
+    updateSubmitState();
   }
+}
+
+function isFormReady() {
+  const hasImage = !!selectedFile;
+  const hasFormat = !!(formatInput && formatInput.value);
+  const hasTechnique = !!(techniqueInput && techniqueInput.value.trim());
+  const hasConcours = !!(numConcursInput && numConcursInput.value);
+  return hasImage && hasFormat && hasTechnique && hasConcours;
+}
+
+function updateSubmitState() {
+  if (!submitButton) return;
+  submitButton.disabled = !isFormReady();
 }
 
 function setInfoMessage(message, type) {
@@ -222,6 +240,7 @@ async function handleFile(file) {
     selectedBase64 = null;
     renderPreviewSource("");
     if (infoBox) infoBox.innerHTML = defaultInfo;
+    updateSubmitState();
     return;
   }
 
@@ -230,6 +249,7 @@ async function handleFile(file) {
     selectedBase64 = null;
     renderPreviewSource("");
     setInfoMessage("Only image files are allowed.", "error");
+    updateSubmitState();
     return;
   }
 
@@ -244,15 +264,23 @@ async function handleFile(file) {
   if (!selectedBase64) {
     renderPreviewSource("");
     setInfoMessage("Unable to read image preview.", "error");
+    updateSubmitState();
     return;
   }
 
   renderPreviewSource(buildDataUrl(selectedBase64, file.type || "image/png"));
+  updateSubmitState();
 }
 
 async function submit_drawing() {
-  if (!selectedFile) {
-    setInfoMessage("Select an image before sending.", "error");
+  const missing = [];
+  if (!selectedFile) missing.push("image");
+  if (!formatInput || !formatInput.value) missing.push("format");
+  if (!techniqueInput || !techniqueInput.value.trim()) missing.push("technique");
+  if (!numConcursInput || !numConcursInput.value) missing.push("concours");
+
+  if (missing.length) {
+    setInfoMessage(`Champs obligatoires manquants : ${missing.join(", ")}.`, "error");
     return null;
   }
 
@@ -305,6 +333,7 @@ function reset() {
   if (previewBox) previewBox.innerHTML = defaultPreview;
   if (infoBox) infoBox.innerHTML = defaultInfo;
   if (dropBox) dropBox.classList.remove("is-dragover");
+  updateSubmitState();
 }
 
 function formatBytes(bytes) {
@@ -338,6 +367,18 @@ if (dropBox && fileInput) {
     const file = event.target.files[0];
     handleFile(file);
   });
+}
+
+if (formatInput) {
+  formatInput.addEventListener("change", updateSubmitState);
+}
+
+if (techniqueInput) {
+  techniqueInput.addEventListener("input", updateSubmitState);
+}
+
+if (numConcursInput) {
+  numConcursInput.addEventListener("change", updateSubmitState);
 }
 
 if (document.readyState === "loading") {
