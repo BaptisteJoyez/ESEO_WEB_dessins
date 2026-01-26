@@ -328,6 +328,12 @@ async function submit_drawing() {
     });
 
     if (!res.ok) {
+      if (res.status === 409) {
+        const warning = "Un dessin a déjà été envoyé pour ce concours.";
+        setInfoMessage(warning, "error");
+        window.alert(warning);
+        return null;
+      }
       setInfoMessage(`Upload failed (${res.status}).`, "error");
       return null;
     }
