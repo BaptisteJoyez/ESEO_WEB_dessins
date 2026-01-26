@@ -42,6 +42,7 @@ const submitButton = document.getElementById("submit-button");
 
 let selectedFile = null;
 let selectedBase64 = null;
+let currentUser = null;
 
 async function initDashboard() {
   const loginUrl = config.LOGIN.BASE_URL || "/view/Authentification/connection/connection.html";
@@ -69,6 +70,7 @@ async function initDashboard() {
     safeUser = user;
   }
 
+  currentUser = safeUser;
   populateFormatOptions();
   await populateConcoursOptions(safeUser);
   updateSubmitState();
@@ -105,16 +107,26 @@ async function populateConcoursOptions(user) {
   numConcursInput.appendChild(placeholder);
 
   const BASE_URL = `${config?.API?.BASE_URL || "/api"}/get/concours`;
-  const nom = user.lastName || user.last_name || user.nom || user.name || "";
-  const prenom = user.firstName || user.first_name || user.prenom || "";
-  const login = user.login || user.username || user.user_name || "";
+  const login = user.login || user.username || user.user_name || user.identifiant || "";
+
+  if (!login) {
+    numConcursInput.innerHTML = "";
+    const errorOption = document.createElement("option");
+    errorOption.value = "";
+    errorOption.disabled = true;
+    errorOption.selected = true;
+    errorOption.textContent = "Login manquant";
+    numConcursInput.appendChild(errorOption);
+    updateSubmitState();
+    return;
+  }
 
   try {
     const res = await fetch(BASE_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ nom, prenom, login }),
+      body: JSON.stringify({ login }),
     });
 
     if (!res.ok) {
@@ -176,7 +188,8 @@ function isFormReady() {
   const hasFormat = !!(formatInput && formatInput.value);
   const hasTechnique = !!(techniqueInput && techniqueInput.value.trim());
   const hasConcours = !!(numConcursInput && numConcursInput.value);
-  return hasImage && hasFormat && hasTechnique && hasConcours;
+  const hasLogin = !!(currentUser && (currentUser.login || currentUser.username || currentUser.identifiant));
+  return hasImage && hasFormat && hasTechnique && hasConcours && hasLogin;
 }
 
 function updateSubmitState() {
@@ -278,6 +291,7 @@ async function submit_drawing() {
   if (!formatInput || !formatInput.value) missing.push("format");
   if (!techniqueInput || !techniqueInput.value.trim()) missing.push("technique");
   if (!numConcursInput || !numConcursInput.value) missing.push("concours");
+  if (!currentUser || !(currentUser.login || currentUser.username || currentUser.identifiant)) missing.push("login");
 
   if (missing.length) {
     setInfoMessage(`Champs obligatoires manquants : ${missing.join(", ")}.`, "error");
@@ -294,14 +308,14 @@ async function submit_drawing() {
       return null;
     }
 
+    const login = currentUser?.login || currentUser?.username || currentUser?.identifiant || "";
     const payload = {
-      image: imageBase64,
-      name: selectedFile.name,
-      mime: selectedFile.type || "image/png",
+      drawing: imageBase64,
+      login,
       commentaire: commentaireInput ? commentaireInput.value.trim() : "",
       format: formatInput ? formatInput.value : "",
       technique: techniqueInput ? techniqueInput.value.trim() : "",
-      numConcurs: numConcursInput ? parseInt(numConcursInput.value, 10) || 0 : 0,
+      numConcours: numConcursInput ? parseInt(numConcursInput.value, 10) || 0 : 0,
     };
 
     const res = await fetch(BASE_URL, {
