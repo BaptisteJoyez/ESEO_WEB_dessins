@@ -30,6 +30,7 @@ class AuthController
                     u.prenom,
                     u.nom,
                     u.motDePasse,
+                    u.login,
                     c.nomClub
                 FROM Utilisateur u
                 LEFT JOIN Club c ON c.numClub = u.numClub
@@ -58,7 +59,8 @@ class AuthController
                 "id"        => $user['numUtilisateur'],
                 "firstName" => $user['prenom'],
                 "lastName"  => $user['nom'],
-                "club"      => $user['nomClub']
+                "club"      => $user['nomClub'],
+                "login"     => $user['login']
             ];
 
             echo json_encode([
