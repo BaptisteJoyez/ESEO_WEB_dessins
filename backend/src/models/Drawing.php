@@ -24,6 +24,27 @@ class DrawingController
         try {
             $pdo = getPDO();
 
+            // Empêcher un second envoi pour le même concours
+            $checkSql = "
+                SELECT 1
+                FROM Dessin d
+                INNER JOIN Competiteur c ON d.numCompetiteur = c.numCompetiteur
+                INNER JOIN Utilisateur u ON c.numCompetiteur = u.numUtilisateur
+                WHERE u.login = :login
+                AND d.numConcours = :numConcours
+                LIMIT 1
+            ";
+            $checkStmt = $pdo->prepare($checkSql);
+            $checkStmt->execute([
+                'login' => $data['login'],
+                'numConcours' => $data['numConcours'],
+            ]);
+
+            if ($checkStmt->fetchColumn()) {
+                $this->sendError(409, "Dessin déjà envoyé pour ce concours");
+                return;
+            }
+
             // Insertion du dessin
             $sql = "
                 INSERT INTO Dessin (
