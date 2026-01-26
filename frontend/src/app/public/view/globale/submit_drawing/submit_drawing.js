@@ -104,8 +104,10 @@ async function populateConcoursOptions(user) {
   const BASE_URL = `${config?.API?.BASE_URL || "/api"}/get/concours`;
   const nom = user.lastName || user.last_name || user.nom || user.name || "";
   const prenom = user.firstName || user.first_name || user.prenom || "";
+  const login = user.login || user.username || user.user_name || "";
 
   try {
+    console.log("Fetching concours for user:", { nom, prenom, login });
     const res = await fetch(BASE_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
