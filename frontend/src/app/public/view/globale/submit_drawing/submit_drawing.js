@@ -107,12 +107,11 @@ async function populateConcoursOptions(user) {
   const login = user.login || user.username || user.user_name || "";
 
   try {
-    console.log("Fetching concours for user:", { nom, prenom, login });
     const res = await fetch(BASE_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ nom, prenom }),
+      body: JSON.stringify({ nom, prenom, login }),
     });
 
     if (!res.ok) {
