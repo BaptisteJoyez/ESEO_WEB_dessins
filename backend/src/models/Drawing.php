@@ -80,6 +80,73 @@ class DrawingController
         }
     }
 
+    public function getUserDrawings(): void
+    {
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        if (!is_array($data) || !isset($data['login'])) {
+            $this->sendError(400, "Login manquant");
+            return;
+        }
+
+        $login = $data['login'];
+        $year = isset($data['year']) && $data['year'] !== "" ? (int)$data['year'] : null;
+        $numConcours = isset($data['numConcours']) && $data['numConcours'] !== "" ? (int)$data['numConcours'] : null;
+
+        try {
+            $pdo = getPDO();
+
+            $conditions = ["u.login = :login"];
+            $params = ['login' => $login];
+
+            if ($year) {
+                $conditions[] = "YEAR(d.dateRemise) = :year";
+                $params['year'] = $year;
+            }
+
+            if ($numConcours) {
+                $conditions[] = "d.numConcours = :numConcours";
+                $params['numConcours'] = $numConcours;
+            }
+
+            $sql = "
+                SELECT
+                    d.numDessin,
+                    d.commentaire,
+                    d.classement,
+                    d.dateRemise,
+                    d.format,
+                    d.technique,
+                    d.leDessin,
+                    d.numConcours,
+                    c.theme,
+                    c.dateDebut,
+                    c.dateFin,
+                    c.etat,
+                    c.lieu
+                FROM Dessin d
+                INNER JOIN Concours c ON d.numConcours = c.numConcours
+                INNER JOIN Competiteur comp ON d.numCompetiteur = comp.numCompetiteur
+                INNER JOIN Utilisateur u ON comp.numCompetiteur = u.numUtilisateur
+                WHERE " . implode(" AND ", $conditions) . "
+                ORDER BY d.dateRemise DESC, d.numDessin DESC
+            ";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
+            $drawings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            http_response_code(200);
+            echo json_encode([
+                "success" => true,
+                "data" => $drawings,
+                "count" => count($drawings)
+            ]);
+        } catch (Throwable $e) {
+            $this->sendError(500, "Erreur serveur", $e->getMessage());
+        }
+    }
+
     /**
      * Envoie une réponse d'erreur JSON
      */

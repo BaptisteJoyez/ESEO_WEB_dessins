@@ -57,6 +57,12 @@ if ($uri === "/api/get/concours" && $_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 
+if ($uri === "/api/get/drawings" && $_SERVER["REQUEST_METHOD"] === "POST") {
+    require_once "../src/models/Drawing.php";
+    (new DrawingController())->getUserDrawings();
+    exit;
+}
+
 
 // 404 fallback
 http_response_code(404);

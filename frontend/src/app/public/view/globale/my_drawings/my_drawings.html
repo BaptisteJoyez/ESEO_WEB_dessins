@@ -20,6 +20,22 @@
         <a class="btn btn-secondary" href="../dashboard/dashboard.html">Retour au dashboard</a>
       </header>
 
+      <section class="glass-card filters">
+        <div class="filter">
+          <label for="filter-year">Annee</label>
+          <select id="filter-year">
+            <option value="">Toutes les annees</option>
+          </select>
+        </div>
+        <div class="filter">
+          <label for="filter-concours">Concours</label>
+          <select id="filter-concours">
+            <option value="">Tous les concours</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-secondary" id="filter-reset">Reinitialiser</button>
+      </section>
+
       <section class="glass-card carousel-wrap">
         <div id="drawingsCarousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-indicators" id="carousel-indicators">
