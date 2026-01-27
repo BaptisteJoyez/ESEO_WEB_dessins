@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="club_drawings.css" />
+    <title>Dessins des clubs</title>
+  </head>
+
+  <body>
+    <main class="club-page">
+      <header class="club-header">
+        <div>
+          <p class="eyebrow">Clubs</p>
+          <h1 id="page-title">Dessins des clubs</h1>
+          <p class="subtitle" id="page-subtitle">Choisis un club pour voir toutes ses images.</p>
+        </div>
+        <a class="btn ghost" href="../dashboard/dashboard.html">Retour au dashboard</a>
+      </header>
+
+      <section class="club-panel">
+        <div class="panel-head">
+          <h2 id="panel-title">Liste des clubs</h2>
+          <a class="btn ghost" id="panel-back" href="club_drawings.html" hidden>Retour a la liste</a>
+        </div>
+
+        <p class="form-message" id="club-message" role="status" aria-live="polite"></p>
+
+        <div id="club-content" class="club-content"></div>
+      </section>
+    </main>
+
+    <script type="module" src="club_drawings.js"></script>
+  </body>
+</html>

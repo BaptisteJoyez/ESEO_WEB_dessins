@@ -15,6 +15,7 @@ const CONFIG = {
     SUB_DRAWING: "http://eseo.tp.py12.fr/view/globale/submit_drawing/submit_drawing.html",
     MY_DRAWINGS: "http://eseo.tp.py12.fr/view/globale/my_drawings/my_drawings.html",
     MY_RESULTS: "http://eseo.tp.py12.fr/view/globale/my_results/my_results.html",
+    CLUB_DRAWINGS: "http://eseo.tp.py12.fr/view/globale/club_drawings/club_drawings.html",
   },
 };
 

@@ -75,6 +75,18 @@ if ($uri === "/api/results/me" && $_SERVER["REQUEST_METHOD"] === "GET") {
     exit;
 }
 
+if ($uri === "/api/clubs" && $_SERVER["REQUEST_METHOD"] === "GET") {
+    require_once "../src/models/Club.php";
+    (new ClubsController())->listClubs();
+    exit;
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "GET" && preg_match('#^/api/clubs/(\\d+)/drawings$#', $uri, $matches)) {
+    require_once "../src/models/Club.php";
+    (new ClubsController())->getClubDrawings((int)$matches[1]);
+    exit;
+}
+
 if ($uri === "/api/admin/concours/status" && $_SERVER["REQUEST_METHOD"] === "PUT") {
     require_once "../src/controllers/AdminConcoursController.php";
     (new AdminConcoursController())->updateStatus();
