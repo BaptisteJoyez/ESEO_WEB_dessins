@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../../assets/css/globale.css" />
+    <link rel="stylesheet" href="manage_competitions.css" />
+    <title>Gestion des concours</title>
+  </head>
+
+  <body>
+    <main class="page">
+      <header class="glass-card page-header">
+        <div>
+          <p class="eyebrow">Administration</p>
+          <h1>Gestion des concours</h1>
+          <p class="subtitle">Ajoute, modifie ou supprime les concours.</p>
+        </div>
+        <a class="btn btn-secondary" href="../dashboard/dashboard.html">Retour au dashboard</a>
+      </header>
+
+      <section class="glass-card admin-guard" id="admin-guard" hidden>
+        <h2>Acces refuse</h2>
+        <p class="subtitle">Cette page est reservee aux administrateurs.</p>
+        <a class="btn btn-primary" href="../../errors/403/403.html">Aller a la page 403</a>
+      </section>
+
+      <section class="glass-card content" id="admin-content">
+        <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+
+        <div class="layout">
+          <form class="editor" id="concours-form" novalidate>
+            <h2 class="section-title">Edition</h2>
+            <input type="hidden" id="numConcours" name="numConcours" />
+
+            <label for="theme">Theme *</label>
+            <input id="theme" name="theme" type="text" required />
+
+            <div class="row">
+              <div>
+                <label for="dateDebut">Date debut *</label>
+                <input id="dateDebut" name="dateDebut" type="date" required />
+              </div>
+              <div>
+                <label for="dateFin">Date fin *</label>
+                <input id="dateFin" name="dateFin" type="date" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="etat">Etat *</label>
+                <select id="etat" name="etat" required>
+                  <option value="pas commence">pas commence</option>
+                  <option value="en cours">en cours</option>
+                  <option value="attente">attente</option>
+                  <option value="resultat">resultat</option>
+                  <option value="evalue">evalue</option>
+                </select>
+              </div>
+              <div>
+                <label for="numPresident">Numero president</label>
+                <input id="numPresident" name="numPresident" type="number" min="1" inputmode="numeric" />
+              </div>
+            </div>
+
+            <label for="lieu">Lieu *</label>
+            <input id="lieu" name="lieu" type="text" required />
+
+            <div class="editor-actions">
+              <button class="btn btn-primary" id="save-button" type="submit">Enregistrer</button>
+              <button class="btn btn-secondary" id="cancel-button" type="button">Annuler</button>
+            </div>
+          </form>
+
+          <section class="list">
+            <div class="list-header">
+              <h2 class="section-title">Concours existants</h2>
+              <button class="btn btn-secondary" id="refresh-button" type="button">Rafraichir</button>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Theme</th>
+                    <th>Dates</th>
+                    <th>Etat</th>
+                    <th>Lieu</th>
+                    <th>President</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="concours-body">
+                  <tr>
+                    <td colspan="7" class="empty">Chargement...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="manage_competitions.js"></script>
+  </body>
+</html>

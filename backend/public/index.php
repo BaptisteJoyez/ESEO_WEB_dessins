@@ -11,7 +11,7 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: http://eseo.tp.py12.fr");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -66,6 +66,12 @@ if ($uri === "/api/get/concours" && $_SERVER["REQUEST_METHOD"] === "POST") {
 if ($uri === "/api/get/drawings" && $_SERVER["REQUEST_METHOD"] === "POST") {
     require_once "../src/models/Drawing.php";
     (new DrawingController())->getUserDrawings();
+    exit;
+}
+
+if ($uri === "/api/admin/concours") {
+    require_once "../src/controllers/AdminConcoursController.php";
+    (new AdminConcoursController())->handle();
     exit;
 }
 

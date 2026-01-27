@@ -105,6 +105,8 @@ class AuthController
                 "lastName" => $nom,
                 "club" => $clubName,
                 "login" => $login,
+                "isAdmin" => false,
+                "role" => "competiteur",
             ];
 
             http_response_code(201);
@@ -151,9 +153,11 @@ class AuthController
                     u.nom,
                     u.motDePasse,
                     u.login,
-                    c.nomClub
+                    c.nomClub,
+                    (a.numAdministrateur IS NOT NULL) AS isAdmin
                 FROM Utilisateur u
                 LEFT JOIN Club c ON c.numClub = u.numClub
+                LEFT JOIN Administrateur a ON a.numAdministrateur = u.numUtilisateur
                 WHERE u.login = :login
                 LIMIT 1
             ";
@@ -180,7 +184,9 @@ class AuthController
                 "firstName" => $user['prenom'],
                 "lastName"  => $user['nom'],
                 "club"      => $user['nomClub'],
-                "login"     => $user['login']
+                "login"     => $user['login'],
+                "isAdmin"   => (bool)$user['isAdmin'],
+                "role"      => $user['isAdmin'] ? "admin" : "competiteur"
             ];
 
             echo json_encode([

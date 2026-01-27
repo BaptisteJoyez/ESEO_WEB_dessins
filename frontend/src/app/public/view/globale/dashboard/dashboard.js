@@ -47,7 +47,7 @@ async function initDashboard() {
 
   console.log("user safe :", safeUser);
 
-  //configureDashboard(safeUser);
+  configureDashboard(safeUser);
 }
 
 /* =========================================================
@@ -55,6 +55,9 @@ async function initDashboard() {
 ========================================================= */
 function configureDashboard(user) {
   displayUserInfo(user);
+  const isAdmin = !!user?.isAdmin || user?.role === "admin";
+  setSectionVisible("manage_competition", isAdmin);
+  setSectionVisible("overview_stat", isAdmin);
 }
 
 /* =========================================================
@@ -72,6 +75,12 @@ function displayUserInfo(user = {}) {
 function setText(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text;
+}
+
+function setSectionVisible(id, visible) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = visible ? "" : "none";
 }
 /* =========================================================
    BOOTSTRAP

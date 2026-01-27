@@ -29,6 +29,12 @@ class SessionService
         return isset($_SESSION["user"]);
     }
 
+    public static function isAdmin(): bool
+    {
+        self::start();
+        return isset($_SESSION["user"]["isAdmin"]) && $_SESSION["user"]["isAdmin"] === true;
+    }
+
     public static function getUser(): ?array
     {
         self::start();
