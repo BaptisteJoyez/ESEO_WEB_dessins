@@ -13,22 +13,108 @@ Before you start
 Start the development environment
 
 1. Open a terminal in the project root (where `docker-compose.yml` is located).
-2. Run:
 
-```bash
-docker compose up
-```
+# projet_eseo — README
 
-Add `-d` to run in detached mode:
+# projet_eseo — Projet d'école ESEO (Compte rendu)
+
+## Description
+
+Ce dépôt contient le projet de fin de semestre réalisé dans le cadre du cursus ESEO (module / promotion indiquée par l'équipe). Il s'agit d'une application web simple composée d'un front-end statique (HTML/CSS/JS) et d'un back-end PHP avec une base de données MySQL.
+
+## Objectifs pédagogiques
+
+- Concevoir une application web full-stack basique.
+- Mettre en place un serveur Apache et une API PHP.
+- Gérer la persistance avec MySQL et sécuriser des répertoires sensibles.
+
+## Équipe
+
+- Équipe : étudiant·e·s de l'ESEO (ajoutez ici les noms et l'email du·des responsable·s pour le rendu).
+
+## Stack technique
+
+- Frontend : fichiers statiques dans `frontend/src/app/public`.
+- Backend : PHP dans `backend/` (points d'entrée dans `backend/public`).
+- Base de données : MySQL (fichier d'initialisation : `SQL/backend.sql`).
+- Serveur web : Apache (exemple de vhost : `apache/000-default.conf`).
+
+## Démo et livrables attendus
+
+- Pages accessibles : page d'accueil front-end, pages de gestion des concours/dessins/résultats.
+- Endpoints API essentiels : consultez `backend/controllers` pour la liste des routes implémentées.
+
+## Comment lancer (pour la démonstration)
+
+Option A — Docker (recommandé pour la correction)
+
+1. Copier `.env.example` en `.env` et adapter si besoin.
+2. Depuis la racine du projet :
 
 ```bash
 docker compose up -d
+# accéder à http://localhost:8080
 ```
 
-Stop and remove containers:
+Option B — Apache natif (sur une VM ou machine Linux)
+
+1. Installer Apache2 :
 
 ```bash
-docker compose down
+sudo apt update
+sudo apt install apache2 php libapache2-mod-php
 ```
 
-If you want, I can expand this README with troubleshooting tips, environment variables, or a short architecture diagram.
+2. Copier la configuration fournie :
+
+```bash
+sudo cp apache/000-default.conf /etc/apache2/sites-available/projet_eseo.conf
+sudo a2ensite projet_eseo.conf
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+```
+
+3. Déployer les fichiers (exemple) :
+
+```bash
+sudo rsync -a --delete ./ /var/www/html/
+sudo chown -R www-data:www-data /var/www/html/frontend/src/app/public
+```
+
+## Importer la base de données
+
+Pour précharger la BDD fournie :
+
+```bash
+# local
+mysql -u root -p eseo_db < SQL/backend.sql
+
+# via conteneur Docker (exemple)
+docker exec -i eseo_db mysql -u root -prootpass eseo_db < SQL/backend.sql
+```
+
+## Fichiers essentiels (pour le correcteur)
+
+- Frontend public : `frontend/src/app/public`
+- Backend (contrôleurs) : `backend/controllers`
+- Configuration Apache fournie : `apache/000-default.conf`
+- Script d'initialisation BDD : `SQL/backend.sql`
+
+## Conseils pour la soutenance
+
+- Préparez une courte démo : navigation principale, création d'un dessin/concours, affichage des résultats.
+- Montrez où modifier les fichiers si l'examinateur veut tester une modification (indiquez le `DocumentRoot`).
+- Ayez à portée de main les commandes pour relancer les services (`docker compose up -d`, `sudo systemctl restart apache2`).
+
+## Ressources ajoutées
+
+- `.env.example` — variables d'environnement exemples.
+- `docker-compose.yml` — composition Docker pour lancer l'application et une base MySQL.
+- `Makefile` — raccourcis utiles (`make up`, `make down`, `make import-db`).
+- `CONTRIBUTING.md` — guide minimal de contribution.
+
+## Support / contact
+
+Pour toute question liée au projet, ajoutez une issue dans le dépôt ou contactez l'équipe (précisez noms/emails ci-dessus).
+
+Bonne soutenance !
