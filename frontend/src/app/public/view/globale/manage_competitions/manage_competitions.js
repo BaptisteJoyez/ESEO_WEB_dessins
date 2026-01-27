@@ -12,6 +12,7 @@ async function loadConfig() {
 
 const config = await loadConfig();
 const API_URL = `${config?.API?.BASE_URL || "/api"}/admin/concours`;
+const STATUS_URL = `${config?.API?.BASE_URL || "/api"}/admin/concours/status`;
 const loginUrl = config?.LOGIN?.BASE_URL || "/view/Authentification/connection/connection.html";
 const forbiddenUrl = "/view/errors/403/403.html";
 
@@ -21,9 +22,8 @@ const bodyEl = document.getElementById("concours-body");
 const refreshButton = document.getElementById("refresh-button");
 const cancelButton = document.getElementById("cancel-button");
 const saveButton = document.getElementById("save-button");
-const guard = document.getElementById("admin-guard");
-const content = document.getElementById("admin-content");
 
+const allowedStatuses = ["pas commence", "en cours", "attente", "resultat", "evalue"];
 let concoursList = [];
 
 function setMessage(text, type = "") {
@@ -59,6 +59,15 @@ function renderEmpty(text) {
   `;
 }
 
+function statusOptions(current) {
+  return allowedStatuses
+    .map((status) => {
+      const selected = status === current ? "selected" : "";
+      return `<option value="${status}" ${selected}>${status}</option>`;
+    })
+    .join("");
+}
+
 function renderTable(list) {
   if (!bodyEl) return;
   if (!list.length) {
@@ -69,22 +78,37 @@ function renderTable(list) {
   bodyEl.innerHTML = "";
 
   list.forEach((entry) => {
+    const num = Number(entry.numConcours);
+    const selectId = `status-select-${num}`;
+    const dates = `
+      <div class="date-cell">
+        <strong>${formatDate(entry.dateDebut)}</strong>
+        <span>${formatDate(entry.dateFin)}</span>
+      </div>
+    `;
+
     const tr = document.createElement("tr");
-
-    const dates = `${formatDate(entry.dateDebut)} - ${formatDate(entry.dateFin)}`;
-
     tr.innerHTML = `
-      <td>${entry.numConcours}</td>
+      <td>${num}</td>
       <td>${entry.theme || "-"}</td>
       <td>${dates}</td>
-      <td>${entry.etat || "-"}</td>
       <td>${entry.lieu || "-"}</td>
       <td>${presidentLabel(entry)}</td>
       <td>
-        <div class="actions">
-          <button class="btn btn-secondary" data-action="edit" data-id="${entry.numConcours}">Editer</button>
-          <button class="btn btn-danger" data-action="delete" data-id="${entry.numConcours}">Supprimer</button>
+        <div class="status-cell">
+          <span class="status-chip">${entry.etat || "-"}</span>
+          <div class="status-line">
+            <select id="${selectId}">
+              ${statusOptions(entry.etat)}
+            </select>
+            <button class="btn ghost" data-action="status-update" data-id="${num}" data-select-id="${selectId}">
+              Mettre a jour
+            </button>
+          </div>
         </div>
+      </td>
+      <td>
+        <button class="btn ghost" data-action="edit" data-id="${num}">Editer</button>
       </td>
     `;
 
@@ -165,8 +189,8 @@ function validate(payload) {
   return true;
 }
 
-async function apiRequest(method, payload = null) {
-  const res = await fetch(API_URL, {
+async function apiRequest(method, payload = null, url = API_URL) {
+  const res = await fetch(url, {
     method,
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -178,8 +202,6 @@ async function apiRequest(method, payload = null) {
     return null;
   }
   if (res.status === 403) {
-    if (content) content.hidden = true;
-    if (guard) guard.hidden = false;
     window.location.href = forbiddenUrl;
     return null;
   }
@@ -229,12 +251,6 @@ async function handleSubmit(event) {
   }
 
   const { res, data } = result;
-  if (res.status === 409) {
-    setMessage(data?.message || "Operation impossible (409).", "error");
-    if (saveButton) saveButton.disabled = false;
-    return;
-  }
-
   if (!res.ok || !data?.success) {
     setMessage(data?.message || `Erreur (${res.status}).`, "error");
     if (saveButton) saveButton.disabled = false;
@@ -247,9 +263,29 @@ async function handleSubmit(event) {
   if (saveButton) saveButton.disabled = false;
 }
 
+async function updateStatus(numConcours, selectId) {
+  const select = document.getElementById(selectId);
+  const etat = select ? select.value : "";
+  if (!etat) return;
+
+  setMessage(`Mise a jour du statut #${numConcours}...`, "");
+  const result = await apiRequest("PUT", { numConcours, etat }, STATUS_URL);
+  if (!result) return;
+
+  const { res, data } = result;
+  if (!res.ok || !data?.success) {
+    setMessage(data?.message || `Erreur statut (${res.status}).`, "error");
+    return;
+  }
+
+  setMessage(`Statut du concours #${numConcours} mis a jour.`, "success");
+  await loadConcours();
+}
+
 function handleTableClick(event) {
   const target = event.target;
   if (!(target instanceof HTMLElement)) return;
+
   const action = target.dataset.action;
   const id = target.dataset.id;
   if (!action || !id) return;
@@ -261,34 +297,14 @@ function handleTableClick(event) {
   if (action === "edit") {
     fillForm(entry);
     setMessage(`Edition du concours #${numConcours}.`, "");
+    window.scrollTo({ top: 0, behavior: "smooth" });
     return;
   }
 
-  if (action === "delete") {
-    const confirmed = window.confirm(`Supprimer le concours #${numConcours} ?`);
-    if (!confirmed) return;
-    deleteConcours(numConcours);
+  if (action === "status-update") {
+    const selectId = target.dataset.selectId;
+    if (selectId) updateStatus(numConcours, selectId);
   }
-}
-
-async function deleteConcours(numConcours) {
-  setMessage("Suppression...", "");
-  const result = await apiRequest("DELETE", { numConcours });
-  if (!result) return;
-
-  const { res, data } = result;
-  if (res.status === 409) {
-    setMessage(data?.message || "Suppression impossible (409).", "error");
-    return;
-  }
-  if (!res.ok || !data?.success) {
-    setMessage(data?.message || `Erreur (${res.status}).`, "error");
-    return;
-  }
-
-  setMessage(`Concours #${numConcours} supprime.`, "success");
-  clearForm();
-  await loadConcours();
 }
 
 async function init() {
@@ -303,9 +319,6 @@ async function init() {
     window.location.href = loginUrl;
     return;
   }
-
-  if (content) content.hidden = false;
-  if (guard) guard.hidden = true;
 
   clearForm();
   await loadConcours();

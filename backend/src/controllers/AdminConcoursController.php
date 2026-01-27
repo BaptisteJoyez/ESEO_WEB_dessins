@@ -35,6 +35,58 @@ class AdminConcoursController
         }
     }
 
+    public function updateStatus(): void
+    {
+        header("Content-Type: application/json");
+
+        if (!$this->ensureAdmin()) {
+            return;
+        }
+
+        $data = $this->readJson();
+        if ($data === null) {
+            $this->sendError(400, "JSON invalide");
+            return;
+        }
+
+        if (!isset($data['numConcours'])) {
+            $this->sendError(400, "numConcours manquant");
+            return;
+        }
+
+        $etat = isset($data['etat']) ? trim((string)$data['etat']) : '';
+        if ($etat === '' || !in_array($etat, self::ALLOWED_ETATS, true)) {
+            $this->sendError(400, "Etat invalide");
+            return;
+        }
+
+        $numConcours = (int)$data['numConcours'];
+
+        try {
+            $pdo = getPDO();
+            $stmt = $pdo->prepare("
+                UPDATE Concours
+                SET etat = :etat
+                WHERE numConcours = :numConcours
+                LIMIT 1
+            ");
+            $stmt->execute([
+                'etat' => $etat,
+                'numConcours' => $numConcours,
+            ]);
+
+            if ($stmt->rowCount() === 0) {
+                $this->sendError(404, "Concours introuvable");
+                return;
+            }
+
+            http_response_code(200);
+            echo json_encode(["success" => true]);
+        } catch (Throwable $e) {
+            $this->sendError(500, "Erreur serveur", $e->getMessage());
+        }
+    }
+
     private function ensureAdmin(): bool
     {
         if (!SessionService::isAuthenticated()) {

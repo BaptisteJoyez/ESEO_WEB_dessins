@@ -32,7 +32,7 @@ class DrawingController
                 INNER JOIN Utilisateur u ON c.numCompetiteur = u.numUtilisateur
                 WHERE u.login = :login
                 AND d.numConcours = :numConcours
-                LIMIT 1
+                LIMIT 3
             ";
             $checkStmt = $pdo->prepare($checkSql);
             $checkStmt->execute([
