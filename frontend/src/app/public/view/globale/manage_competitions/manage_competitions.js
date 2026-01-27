@@ -178,6 +178,8 @@ async function apiRequest(method, payload = null) {
     return null;
   }
   if (res.status === 403) {
+    if (content) content.hidden = true;
+    if (guard) guard.hidden = false;
     window.location.href = forbiddenUrl;
     return null;
   }
@@ -289,10 +291,6 @@ async function deleteConcours(numConcours) {
   await loadConcours();
 }
 
-function isAdminUser(user) {
-  return !!user?.isAdmin || user?.role === "admin";
-}
-
 async function init() {
   let session = null;
   try {
@@ -303,14 +301,6 @@ async function init() {
 
   if (!session) {
     window.location.href = loginUrl;
-    return;
-  }
-
-  const safeUser = session.user ? session.user : session;
-  if (!isAdminUser(safeUser)) {
-    if (content) content.hidden = true;
-    if (guard) guard.hidden = false;
-    window.location.href = forbiddenUrl;
     return;
   }
 

@@ -11,8 +11,7 @@ class AdminConcoursController
     {
         header("Content-Type: application/json");
 
-        if (!SessionService::isAuthenticated() || !SessionService::isAdmin()) {
-            $this->sendError(403, "Acces reserve aux administrateurs");
+        if (!$this->ensureAdmin()) {
             return;
         }
 
@@ -33,6 +32,57 @@ class AdminConcoursController
                 return;
             default:
                 $this->sendError(405, "Methode non autorisee");
+        }
+    }
+
+    private function ensureAdmin(): bool
+    {
+        if (!SessionService::isAuthenticated()) {
+            $this->sendError(401, "Utilisateur non authentifie");
+            return false;
+        }
+
+        $user = SessionService::getUser();
+        $login = $user['login'] ?? null;
+        if (!$login) {
+            $this->sendError(401, "Session invalide (login manquant)");
+            return false;
+        }
+
+        try {
+            $pdo = getPDO();
+
+            $userStmt = $pdo->prepare("
+                SELECT numUtilisateur
+                FROM Utilisateur
+                WHERE login = :login
+                LIMIT 1
+            ");
+            $userStmt->execute(['login' => $login]);
+            $userId = $userStmt->fetchColumn();
+
+            if (!$userId) {
+                $this->sendError(401, "Utilisateur introuvable");
+                return false;
+            }
+
+            $adminStmt = $pdo->prepare("
+                SELECT 1
+                FROM Administrateur
+                WHERE numAdministrateur = :userId
+                LIMIT 1
+            ");
+            $adminStmt->execute(['userId' => (int)$userId]);
+
+            if (!$adminStmt->fetchColumn()) {
+                $this->sendError(403, "Acces reserve aux administrateurs");
+                return false;
+            }
+
+            return true;
+        } catch (Throwable $e) {
+            $this->sendError(500, "Erreur serveur", $e->getMessage());
+            return false;
         }
     }
 
