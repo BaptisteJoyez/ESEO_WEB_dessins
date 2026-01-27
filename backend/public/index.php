@@ -27,6 +27,12 @@ if ($uri === "/api/user/login" && $_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 
+if ($uri === "/api/user/register" && $_SERVER["REQUEST_METHOD"] === "POST") {
+    require_once "../src/controllers/AuthController.php";
+    (new AuthController())->register();
+    exit;
+}
+
 if ($uri === "/api/authClient" && $_SERVER["REQUEST_METHOD"] === "GET") {
     require_once "../src/controllers/AuthController.php";
     (new AuthController())->userAcces();

@@ -1,6 +1,54 @@
-/* Register page specific */
+.register-card {
+  width: min(820px, 96vw);
+}
 
-/* Reuse connection action styles for consistent button layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+  margin-top: 8px;
+}
+
+.field {
+  display: grid;
+}
+
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+select {
+  font-size: 1.15rem;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink);
+  outline: none;
+  transition: box-shadow 0.12s, border-color 0.12s;
+}
+
+select:focus {
+  border-color: rgba(91, 140, 255, 0.6);
+  box-shadow: 0 6px 18px rgba(91, 140, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.form-message {
+  min-height: 1.4em;
+  margin: 6px 0 2px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.form-message.is-error {
+  color: var(--danger);
+}
+
+.form-message.is-success {
+  color: var(--accent-2);
+}
 
 .register-actions {
   margin-top: 18px;
@@ -10,9 +58,9 @@
 }
 
 .register-actions .btn {
-  width: 48%;
-  font-size: 1.15rem;
-  padding: 10px 12px;
+  width: 100%;
+  font-size: 1.05rem;
+  padding: 11px 12px;
   border-radius: 10px;
 }
 
@@ -35,6 +83,21 @@
 .litle-header {
   margin-left: 0;
   margin-bottom: 1.25rem;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   color: var(--muted);
+}
+
+.litle-header a {
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.litle-header a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 820px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
