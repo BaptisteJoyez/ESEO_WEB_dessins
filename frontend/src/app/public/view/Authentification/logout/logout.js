@@ -1,7 +1,7 @@
-// Logout component script
-// If a global `logout` function exists it will be called; otherwise
-// this script POSTs to `/logout` and redirects to the connection page.
 (function () {
+  const LOGOUT_URL = "/api/user/logout";
+  const REDIRECT_URL = "/view/Authentification/connection/connection.html";
+
   async function performLogout() {
     if (typeof window.logout === "function") {
       try {
@@ -9,14 +9,14 @@
       } catch (err) {
         console.error("logout() threw:", err);
       }
-      window.location.href = "../connection/coonnection.html";
+      window.location.href = REDIRECT_URL;
       return;
     }
 
     try {
-      const res = await fetch("/logout", { method: "POST", credentials: "include" });
+      const res = await fetch(LOGOUT_URL, { method: "POST", credentials: "include" });
       if (res.ok) {
-        window.location.href = "../../Authentification/connection/connection.html";
+        window.location.href = REDIRECT_URL;
       } else {
         console.error("Logout failed", res.status);
       }

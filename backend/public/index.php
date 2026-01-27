@@ -46,7 +46,7 @@ if ($uri === "/api/test-db" && $_SERVER["REQUEST_METHOD"] === "GET") {
 
 if ($uri === "/api/user/logout" && $_SERVER["REQUEST_METHOD"] === "POST") {
     require_once "../src/services/SessionService.php";
-    (new SessionService())->logout();
+    SessionService::logout();
     exit;
 }
 
