@@ -69,6 +69,12 @@ if ($uri === "/api/get/drawings" && $_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 
+if ($uri === "/api/results/me" && $_SERVER["REQUEST_METHOD"] === "GET") {
+    require_once "../src/models/Result.php";
+    (new ResultsController())->getMyResults();
+    exit;
+}
+
 if ($uri === "/api/admin/concours/status" && $_SERVER["REQUEST_METHOD"] === "PUT") {
     require_once "../src/controllers/AdminConcoursController.php";
     (new AdminConcoursController())->updateStatus();

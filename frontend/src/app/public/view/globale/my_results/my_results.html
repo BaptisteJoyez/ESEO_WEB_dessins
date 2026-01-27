@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="my_results.css" />
+    <title>Mes resultats</title>
+  </head>
+
+  <body>
+    <main class="results-page">
+      <header class="results-header">
+        <div>
+          <p class="eyebrow">Competiteur</p>
+          <h1>Mes resultats</h1>
+          <p class="subtitle">Retrouve le statut, le classement et les notes de tes dessins.</p>
+        </div>
+        <a class="btn ghost" href="../dashboard/dashboard.html">Retour au dashboard</a>
+      </header>
+
+      <section class="results-panel">
+        <p class="form-message" id="results-message" role="status" aria-live="polite"></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th># Dessin</th>
+                <th>Concours</th>
+                <th>Date remise</th>
+                <th>Classement</th>
+                <th>Note moyenne</th>
+                <th>Evaluations</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="results-body">
+              <tr>
+                <td colspan="7" class="empty">Chargement...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="my_results.js"></script>
+  </body>
+</html>
