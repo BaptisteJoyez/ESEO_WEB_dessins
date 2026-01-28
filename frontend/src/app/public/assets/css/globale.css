@@ -33,7 +33,13 @@ body {
 
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial;
   font-size: 20px;
   color: var(--ink);
   display: grid;
@@ -95,6 +101,15 @@ h1 {
   font-weight: 600;
 }
 
+/* Site brand (small, present on headers) */
+
+.site-brand {
+  font-weight: 700;
+  color: var(--accent-2);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
 .subtitle {
   text-align: center;
   color: var(--muted);
@@ -121,7 +136,9 @@ input {
   background: rgba(255, 255, 255, 0.06);
   color: var(--ink);
   outline: none;
-  transition: box-shadow 0.12s, border-color 0.12s;
+  transition:
+    box-shadow 0.12s,
+    border-color 0.12s;
 }
 
 input::placeholder {
@@ -145,7 +162,9 @@ input:focus {
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
 }
 
 .btn-primary {

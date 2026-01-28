@@ -70,6 +70,20 @@ body {
   backdrop-filter: blur(12px) saturate(140%);
 }
 
+/* center carousel content and constrain inner width */
+
+.carousel-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-inner {
+  max-width: 880px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .carousel-inner {
   border-radius: 16px;
   overflow: hidden;
@@ -83,6 +97,7 @@ body {
   object-fit: contain;
   display: block;
   padding: 16px;
+  margin: 0 auto;
 }
 
 .placeholder-card {
